@@ -1,0 +1,23 @@
+{
+  "name": "jirabot4slack",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node bot.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miguelPerezOntiveros/jiraBot4Slack.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/miguelPerezOntiveros/jiraBot4Slack/issues"
+  },
+  "homepage": "https://github.com/miguelPerezOntiveros/jiraBot4Slack#readme",
+  "dependencies": {
+    "botkit": "^0.2.2"
+  }
+}
