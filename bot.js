@@ -1,5 +1,18 @@
 eval(require('fs').readFileSync('secret.js')+'');
 
+//Cleverbot
+var cleverbot = require("cleverbot.io"),  
+cleverbot = new cleverbot('LqJruH49qbDKhyQD','3jjbLxQjBAyln50l1dohUihB9Us4FD1p');
+cleverbot.setNick("Bob");  
+cleverbot.create(function (err, session) {  
+    if (err) {
+        console.log('cleverbot create fail.');
+    } else {
+        console.log('cleverbot create success.');
+    }
+});
+
+
 var Botkit = require('botkit');
 
 var controller = Botkit.slackbot({
@@ -7,17 +20,47 @@ var controller = Botkit.slackbot({
 });
 
 // connect the bot to a stream of messages
-controller.spawn({
+var bot = controller.spawn({
   token: token,
 }).startRTM()
 
-controller.hears(["hello"],['direct_message','direct_mention','mention'],function(bot,message) {
+controller.hears('','direct_message,direct_mention,mention',function(bot,message) {  
+    var msg = message.text;
+    cleverbot.ask(msg, function (err, response) {
+        if (!err) {
+            bot.reply(message, response);
+        } else {
+            console.log('cleverbot err: ' + err);
+        }
+    });
+})
+
+controller.hears(["hello", "hi", "hey"],['direct_message','direct_mention','mention'],function(bot,message) {
+	console.log(message);
 	bot.reply(message,'Hey.');
 });
 
+controller.hears(["map"],['direct_message','direct_mention','mention'],function(bot,message) {
+	console.log(message);
+	if(message.user == 'U0MKSP3QS'){
+		bot.reply(message,'Mapping.');
+	}
+});
+
+controller.hears(["whoami"],['direct_message','direct_mention','mention'],function(bot, message) {
+	console.log(message);
+	bot.reply(message, message.user);
+});
+
+controller.on('channel_joined',function(bot,message) {
+
+});
+
+
+
+
 /*
 rtm.start //opens websocket 
-
 
 https://api.slack.com/methods/chat.postMessage //for more complex answers. Be sure and set as_user to true and use your bot user token xoxb-58751128276-oRNHNwrAzj6bRMtFQiNVqt6s.
 for buttons, you nees a slack app

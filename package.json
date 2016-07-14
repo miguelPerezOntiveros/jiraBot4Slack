@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/miguelPerezOntiveros/jiraBot4Slack#readme",
   "dependencies": {
-    "botkit": "^0.2.2"
+    "botkit": "^0.2.2",
+    "cleverbot.io": "^1.0.4"
   }
 }
