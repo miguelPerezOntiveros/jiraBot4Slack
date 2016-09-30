@@ -52,9 +52,31 @@ controller.hears(['hello', 'hi', 'hey'],['direct_message','direct_mention','ment
 	reply(bot, message, 'Hey.');
 });
 
-
 controller.hears(['create issue', 'open issue'],['direct_message','direct_mention','mention'],function(bot,message) {
 	reply(bot, message, 'What project is it for (project key | "list keys")?');
+});
+
+controller.hears(['list keys'],['direct_message','direct_mention','mention'],function(bot,message) {
+
+	request({
+		    url: 'https://jira.base22.com/rest/api/2/project',
+		    headers: {
+		      'Authorization': authorization,
+		      'Content-Type':'application/json'
+	    	}
+	  	}, 
+		(error, response, body) => {
+			if (!error && response.statusCode == 200) {
+				var data = JSON.parse(body);
+				data = data.map(e => {return e.key});
+				reply(bot, message, 'Total: ' + data.length + '.\n\n' + data.join(', '));
+	    	}
+	    	else{
+				reply(bot, message, 'ERROR');
+
+	    	}
+	  	}
+	);
 });
 
 controller.hears(['list (.*) tasks for (.*)'],['direct_message','direct_mention','mention'],function(bot,message) {
@@ -66,7 +88,7 @@ controller.hears(['list (.*) tasks for (.*)'],['direct_message','direct_mention'
 	request({
 		    url: 'https://jira.base22.com/rest/api/2/search?jql=assignee=' + assignee + '%20AND%20status%20%3D%20' + status,
 		    headers: {
-		      'Authorization':'Basic bWlndWVsLnBlcmV6OngxWDQ4YmMwV3NtMS4=',
+		      'Authorization': authorization,
 		      'Content-Type':'application/json'
 	    	}
 	  	}, 
@@ -80,7 +102,6 @@ controller.hears(['list (.*) tasks for (.*)'],['direct_message','direct_mention'
 	  	}
 	);
 });
-
 
 controller.hears(['log here'],['direct_message','direct_mention','mention'],function(bot,message) {
 	controller.storage.teams.save({id: message.team, logChannel:message.channel}, function(err) { return; });
