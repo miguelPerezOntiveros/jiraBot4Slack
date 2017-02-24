@@ -52,6 +52,10 @@ controller.hears(['hello', 'hi', 'hey'],['direct_message','direct_mention','ment
 	reply(bot, message, 'Hey.');
 });
 
+controller.hears(['version', '-version'],['direct_message','direct_mention','mention'],function(bot,message) {
+	reply(bot, message, '0.1');
+});
+
 controller.hears(['create issue', 'open issue'],['direct_message','direct_mention','mention'],function(bot,message) {
 	reply(bot, message, 'What project is it for (project key | "list keys")?');
 });
